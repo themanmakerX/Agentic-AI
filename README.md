@@ -3,7 +3,7 @@
 Agentic-AI is a multi-agent ecosystem for coding agents. This repository is split into two main parts:
 
 - `skills/` for agent behavior, workflows, and instruction files
-- `mcp/code-review-graph/` for the MCP-powered code review graph service
+- `mcp/` for the repository's MCP bundles
 
 The goal of the repo is to make agent workflows more structured, more reviewable, and easier to use across different client platforms.
 
@@ -20,23 +20,20 @@ See [`skills/README.md`](skills/README.md) for the skill index.
 
 ### MCP tooling
 
-The `mcp/code-review-graph/` tree contains a standalone Python package that builds a repository graph and exposes it through MCP-oriented tooling.
+The `mcp/` tree contains the repository's MCP-related bundles:
 
-It provides:
+- [`code-review-graph/`](mcp/code-review-graph/) - a Python MCP package for code review graph analysis, graph queries, workspace audit, and TOML installer support
+- [`vault/`](mcp/vault/) - a JavaScript MCP plugin bundle for persistent agent memory, vault selection, records, facts, links, journals, and checkpoint hooks
 
-- graph build and update commands
-- MCP server startup support
-- TOML install helpers for client configuration
-- workspace analysis, review context, semantic search, and graph stats
-
-See [`mcp/code-review-graph/README.md`](mcp/code-review-graph/README.md) for the MCP package details.
+See [`mcp/README.md`](mcp/README.md) for the MCP index.
 
 ## Repository layout
 
 ```text
 Agentic-AI/
 ├─ mcp/
-│  └─ code-review-graph/
+│  ├─ code-review-graph/
+│  └─ vault/
 ├─ skills/
 └─ README.md
 ```
@@ -45,6 +42,7 @@ Agentic-AI/
 
 - If you want to add or inspect agent workflows, start in `skills/`
 - If you want to run or extend the code review graph service, start in `mcp/code-review-graph/`
+- If you want to use the Vault MCP bundle, start in `mcp/vault/`
 - If you are onboarding to the repository, read `skills/repo-onboarding/SKILL.md`
 - If you want the multi-agent orchestration workflow, read `skills/superdeveloper/SKILL.md`
 
@@ -53,11 +51,11 @@ Agentic-AI/
 The repository separates agent instructions from service code so each part can evolve independently:
 
 - skills can focus on agent behavior and workflow guidance
-- the MCP package can focus on code analysis and review tooling
+- the MCP bundles can focus on analysis, memory, and review tooling
 - the root README can stay short and point people to the right place quickly
 
 ## Contributing
 
 When changing a skill, keep the skill index up to date and make sure the documentation matches the actual folder structure.
 
-When changing the MCP package, keep the package README and `pyproject.toml` aligned with the code and install flow.
+When changing an MCP bundle, keep its README and launcher/config files aligned with the code and install flow.
