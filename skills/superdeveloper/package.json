@@ -1,0 +1,7 @@
+{
+  "name": "superdeveloper",
+  "version": "5.0.7",
+  "author": "Atif Afzal <AtifAfzal457@gmail.com>",
+  "type": "module",
+  "main": ".opencode/plugins/superdeveloper.js"
+}
