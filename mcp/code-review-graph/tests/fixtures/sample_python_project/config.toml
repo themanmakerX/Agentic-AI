@@ -1,7 +1,0 @@
-[mcp.servers.code-review-graph]
-command = "python"
-args = [
-    "-m",
-    "code_review_graph.server",
-]
-cwd = "E:\\Education\\code-review-graph"
