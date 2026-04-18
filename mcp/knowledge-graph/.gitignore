@@ -1,0 +1,15 @@
+.graph_db/
+.pytest_cache/
+.pytest-tmp/
+.pytest-tmp-*/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.sqlite3-journal
+*.sqlite
+*.sqlite-journal
+*.tmp
+*.bak
+.codex/

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "knowledge-graph"
+version = "0.1.0"
+description = "Unified knowledge graph MCP for codebase indexing, querying, and visualization."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.115.0",
+  "mcp>=1.2.0",
+  "tomli>=2.0.1; python_version < '3.11'",
+  "tomli-w>=1.0.0",
+  "uvicorn>=0.30.0",
+]
+
+[project.scripts]
+kg = "knowledge_graph.cli:main"
+knowledge-graph = "knowledge_graph.cli:main"
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+treesitter = ["tree-sitter>=0.21"]
+embeddings = ["sentence-transformers>=3.0.0"]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

@@ -1,0 +1,93 @@
+Metadata-Version: 2.4
+Name: knowledge-graph
+Version: 0.1.0
+Summary: Unified knowledge graph MCP for codebase indexing, querying, and visualization.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi>=0.115.0
+Requires-Dist: mcp>=1.2.0
+Requires-Dist: tomli>=2.0.1; python_version < "3.11"
+Requires-Dist: tomli-w>=1.0.0
+Requires-Dist: uvicorn>=0.30.0
+Provides-Extra: test
+Requires-Dist: pytest>=8.0; extra == "test"
+Provides-Extra: treesitter
+Requires-Dist: tree-sitter>=0.21; extra == "treesitter"
+Provides-Extra: embeddings
+Requires-Dist: sentence-transformers>=3.0.0; extra == "embeddings"
+
+# knowledge-graph
+
+`knowledge-graph` is a persistent code graph service with three surfaces:
+
+- MCP tools for Codex and other agents
+- a FastAPI web app for interactive graph browsing
+- a shared indexing/query backend used by both
+
+## Layout
+
+```text
+app/
+src/knowledge_graph/
+|- graph/
+|- mcp/
+|- backend.py
+|- cli.py
+|- jobs.py
+|- payloads.py
+|- runtime.py
+|- serve.py
+|- storage.py
+|- web.py
+`- __main__.py
+```
+
+## Entry points
+
+- `kg`
+- `knowledge-graph`
+- `python -m knowledge_graph`
+- `python -m knowledge_graph.server`
+- `python -m knowledge_graph.mcp.server`
+- `knowledge-graph web`
+
+## Web app
+
+Start the persistent app with:
+
+```bash
+knowledge-graph web --host 127.0.0.1 --port 5000
+```
+
+The app exposes:
+
+- `POST /api/build`
+- `GET /api/builds/{job_id}`
+- `GET /api/repo_info`
+- `GET /api/graph_entities`
+- `GET /api/file_details`
+- `POST /api/auto_complete`
+- `POST /api/get_neighbors`
+- `POST /api/find_paths`
+- `POST /api/chat`
+
+The browser UI is query-driven. It does not depend on a generated `index.html + graph.json` bundle.
+
+## MCP tools
+
+The MCP surface includes:
+
+- `build_or_update_graph`
+- `get_build_status`
+- `autocomplete_entities`
+- `get_neighbors`
+- `find_paths`
+- `ask_graph`
+- `trace_dataflow`
+- `get_impact_radius`
+
+## Notes
+
+- Runtime outputs are written under `.graph_db/`
+- Workspace databases live under `.graph_db/workspaces/<workspace>/graph.sqlite3`
+- Background build statuses live under `.graph_db/jobs/<job_id>.json`

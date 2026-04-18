@@ -1,0 +1,7 @@
+[mcp.servers.knowledge-graph]
+command = "python"
+args = [
+    "-m",
+    "knowledge_graph.server",
+]
+cwd = "E:\\Education\\mcp"

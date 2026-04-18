@@ -1,0 +1,16 @@
+fastapi>=0.115.0
+mcp>=1.2.0
+tomli-w>=1.0.0
+uvicorn>=0.30.0
+
+[:python_version < "3.11"]
+tomli>=2.0.1
+
+[embeddings]
+sentence-transformers>=3.0.0
+
+[test]
+pytest>=8.0
+
+[treesitter]
+tree-sitter>=0.21

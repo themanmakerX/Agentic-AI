@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Knowledge Graph</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <p class="eyebrow">Knowledge Graph</p>
+        <h1>Codebase dependency view</h1>
+        <p class="root-label">Codebase path</p>
+        <p id="hero-root" class="hero-root">No codebase selected</p>
+      </div>
+      <form id="build-form" class="build-form">
+        <label>
+          <span>Analyze codebase</span>
+          <input id="root-path" name="root-path" type="text" placeholder="D:\dma_code">
+        </label>
+        <div class="actions">
+          <button type="submit">Build graph</button>
+          <button id="refresh-button" type="button" class="secondary">Refresh</button>
+        </div>
+      </form>
+    </header>
+
+    <section class="status-ribbon">
+      <div class="status-copy">
+        <strong id="status-text">No build running.</strong>
+        <span id="status-meta">Build a graph to start browsing.</span>
+      </div>
+      <div class="status-progress">
+        <div class="progress-track">
+          <div id="progress-bar" class="progress-bar"></div>
+        </div>
+      </div>
+      <div class="status-links">
+        <a id="status-web-link" class="hidden" target="_blank" rel="noreferrer">Open live view</a>
+        <a id="status-api-link" class="hidden" target="_blank" rel="noreferrer">Open API</a>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article><span>Build state</span><strong id="metric-state">idle</strong></article>
+      <article><span>Directories</span><strong id="metric-directories">0</strong></article>
+      <article><span>Files</span><strong id="metric-files">0</strong></article>
+      <article><span>Symbols</span><strong id="metric-symbols">0</strong></article>
+      <article><span>Edges</span><strong id="metric-edges">0</strong></article>
+      <article><span>Connected regions</span><strong id="metric-regions">0</strong></article>
+    </section>
+
+    <section class="workspace">
+      <aside id="left-rail" class="side-rail left-rail">
+        <div class="rail-head">
+          <h2>Navigator</h2>
+          <button id="toggle-left" type="button" class="icon-button">Hide</button>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Search</h3>
+          </div>
+          <input id="search-input" type="text" placeholder="Search file or symbol">
+          <div id="search-results" class="result-list"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Module groups</h3>
+          </div>
+          <div id="module-groups" class="chip-grid"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <h3>Indexed files</h3>
+          </div>
+          <div id="file-list" class="file-list"></div>
+        </div>
+      </aside>
+
+      <main class="graph-stage">
+        <div class="graph-shell">
+          <div class="graph-header">
+            <div>
+              <p class="graph-kicker">Graph</p>
+              <h2>Dependency surface</h2>
+              <p id="graph-meta" class="graph-meta">Build a graph to start exploring.</p>
+            </div>
+            <div class="graph-toolbar">
+              <button id="toggle-left-inline" type="button" class="secondary">Toggle navigator</button>
+              <button id="toggle-right-inline" type="button" class="secondary">Toggle details</button>
+              <button id="show-overview-button" type="button" class="secondary">Overview</button>
+              <button id="show-full-button" type="button" class="secondary">Full graph</button>
+              <button id="zoom-out-button" type="button" class="secondary">-</button>
+              <button id="zoom-in-button" type="button" class="secondary">+</button>
+              <button id="fit-button" type="button" class="secondary">Fit</button>
+              <button id="reset-button" type="button" class="secondary">Reset</button>
+            </div>
+          </div>
+
+          <div id="graph-scroll" class="graph-scroll">
+            <div id="graph-canvas" class="graph-canvas">
+              <svg id="graph-svg" viewBox="0 0 2600 1800" preserveAspectRatio="xMinYMin meet"></svg>
+            </div>
+          </div>
+
+          <div class="graph-footer">
+            <div class="legend">
+              <span><i class="legend-dot python"></i>Python</span>
+              <span><i class="legend-dot systemverilog"></i>SystemVerilog</span>
+              <span><i class="legend-dot javascript"></i>JavaScript</span>
+              <span><i class="legend-dot neutral"></i>Other</span>
+            </div>
+            <div class="legend">
+              <span><i class="legend-line imports"></i>Imports</span>
+              <span><i class="legend-line references"></i>References</span>
+              <span><i class="legend-line calls"></i>Calls</span>
+            </div>
+          </div>
+        </div>
+        <div class="minimap-shell">
+          <div class="panel-head">
+            <h3>Overview map</h3>
+            <button id="center-selection-button" type="button" class="secondary">Center selection</button>
+          </div>
+          <div id="minimap" class="minimap"></div>
+        </div>
+      </main>
+
+      <aside id="right-rail" class="side-rail right-rail">
+        <div class="rail-head">
+          <h2>Selection</h2>
+          <button id="toggle-right" type="button" class="icon-button">Hide</button>
+        </div>
+        <div class="panel selection-panel">
+          <div id="selection-empty" class="muted">Pick a node to inspect its file, symbols, dependencies, and quick actions.</div>
+          <div id="selection-card" class="selection-card hidden">
+            <p id="selection-language" class="pill-label"></p>
+            <h3 id="selection-title"></h3>
+            <p id="selection-subtitle" class="muted"></p>
+            <div id="selection-counts" class="selection-counts"></div>
+            <div class="quick-actions">
+              <button id="focus-neighbors-button" type="button" class="secondary">Focus neighbors</button>
+              <button id="find-paths-button" type="button" class="secondary">Find paths</button>
+              <button id="ask-about-file-button" type="button" class="secondary">Ask graph</button>
+            </div>
+            <div class="detail-block">
+              <h4>Detected symbols</h4>
+              <div id="selection-symbols" class="chip-grid"></div>
+            </div>
+            <div class="detail-block">
+              <h4>Outgoing dependencies</h4>
+              <div id="selection-outgoing" class="token-list"></div>
+            </div>
+            <div class="detail-block">
+              <h4>Incoming dependencies</h4>
+              <div id="selection-incoming" class="token-list"></div>
+            </div>
+            <div class="detail-block">
+              <h4>Path results</h4>
+              <div id="path-results" class="token-list"></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel ask-panel">
+          <div class="panel-head">
+            <h3>Ask graph</h3>
+          </div>
+          <textarea id="question-input" rows="5" placeholder="Which files look central to this codebase?"></textarea>
+          <button id="ask-button" type="button">Ask</button>
+          <div id="answer-box" class="answer-box muted">No answer yet.</div>
+        </div>
+      </aside>
+    </section>
+  </div>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>
