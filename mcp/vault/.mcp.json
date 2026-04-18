@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "vault": {
+      "command": "python",
+      "args": [
+        "./scripts/vault_mcp.py"
+      ]
+    }
+  }
+}
