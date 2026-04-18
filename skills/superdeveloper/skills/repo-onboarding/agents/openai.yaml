@@ -1,0 +1,4 @@
+interface:
+  display_name: "Repo Onboarding"
+  short_description: "Deep repo analysis and instruction trees"
+  default_prompt: "Use $repo-onboarding to scan this repository, spawn focused subagents, and generate a conservative AGENTS/CLAUDE instruction tree with a formal output schema."

@@ -1,0 +1,1 @@
+I need you to coordinate an end-to-end development effort for a feature, keep a running record of decisions, and adapt automatically to the current coding environment. Use the most complete orchestration flow available.

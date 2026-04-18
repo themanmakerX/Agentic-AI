@@ -1,0 +1,25 @@
+{
+  "name": "superdeveloper",
+  "displayName": "Superdeveloper",
+  "description": "Core skills library: TDD, debugging, collaboration patterns, and proven techniques",
+  "version": "5.0.7",
+  "author": {
+    "name": "Atif Afzal",
+    "email": "AtifAfzal457@gmail.com"
+  },
+  "homepage": "https://github.com/themanmakerX/Agentic-AI",
+  "repository": "https://github.com/themanmakerX/Agentic-AI",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "tdd",
+    "debugging",
+    "collaboration",
+    "best-practices",
+    "workflows"
+  ],
+  "skills": "./skills/",
+  "agents": "./agents/",
+  "commands": "./commands/",
+  "hooks": "./hooks/hooks-cursor.json"
+}

@@ -1,0 +1,1 @@
+Please use superdeveloper to coordinate this coding task, keep documentation current, and generate the final README, usage manual, and developer manual.

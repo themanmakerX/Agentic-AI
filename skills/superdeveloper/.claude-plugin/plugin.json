@@ -1,0 +1,20 @@
+{
+  "name": "superdeveloper",
+  "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
+  "version": "5.0.7",
+  "author": {
+    "name": "Atif Afzal",
+    "email": "AtifAfzal457@gmail.com"
+  },
+  "homepage": "https://github.com/themanmakerX/Agentic-AI",
+  "repository": "https://github.com/themanmakerX/Agentic-AI",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "tdd",
+    "debugging",
+    "collaboration",
+    "best-practices",
+    "workflows"
+  ]
+}

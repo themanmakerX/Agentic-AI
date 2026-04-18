@@ -1,4 +1,6 @@
 # Skills
 
-- [repo-onboarding](repo-onboarding/SKILL.md) - deep repository onboarding, tree analysis, and instruction-tree generation.
-- [superdeveloper](superdeveloper/SKILL.md) - end-to-end development orchestration with platform detection, staged multi-agent teams, review gates, and documentation capture.
+This directory contains the repository's packaged skills and skill bundles.
+
+- [`repo-onboarding/`](repo-onboarding/) - Repository onboarding skill for codebase analysis, context building, and instruction-tree generation.
+- [`superdeveloper/`](superdeveloper/) - Full multi-agent skill bundle with platform plugins, commands, docs, hooks, MCP integrations, tests, and reusable development workflows.

@@ -1,0 +1,20 @@
+{
+  "name": "superdeveloper-dev",
+  "description": "Development marketplace for Superdeveloper core skills library",
+  "owner": {
+    "name": "Atif Afzal",
+    "email": "AtifAfzal457@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "superdeveloper",
+      "description": "Core skills library for Claude Code: TDD, debugging, collaboration patterns, and proven techniques",
+      "version": "5.0.7",
+      "source": "./",
+      "author": {
+        "name": "Atif Afzal",
+        "email": "AtifAfzal457@gmail.com"
+      }
+    }
+  ]
+}
