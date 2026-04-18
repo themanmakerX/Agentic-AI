@@ -1,126 +1,55 @@
 # Superdeveloper for Codex
 
-Guide for using Superdeveloper with OpenAI Codex via native skill discovery.
+Guide for using the `superdeveloper` bundle with Codex-style skill discovery.
 
-## Quick Install
+## Quick install
 
-Tell Codex:
+If you want the repository-provided install instructions directly, use:
 
+```text
+Fetch and follow instructions from https://raw.githubusercontent.com/themanmakerX/Agentic-AI/refs/heads/main/skills/superdeveloper/.codex/INSTALL.md
 ```
-Fetch and follow instructions from https://raw.githubusercontent.com/themanmakerX/Agentic-AI/refs/heads/main/.codex/INSTALL.md
-```
 
-## Manual Installation
+## Manual install
 
 ### Prerequisites
 
-- OpenAI Codex CLI
-- Git
+- Codex installed locally
+- Git available in `PATH`
 
 ### Steps
 
-1. Clone the repo:
+1. Clone the repository:
+
    ```bash
    git clone https://github.com/themanmakerX/Agentic-AI.git ~/.codex/superdeveloper
    ```
 
-2. Create the skills symlink:
+2. Expose the packaged skills directory:
+
    ```bash
    mkdir -p ~/.agents/skills
-   ln -s ~/.codex/superdeveloper/skills ~/.agents/skills/superdeveloper
+   ln -s ~/.codex/superdeveloper/skills/superdeveloper/skills ~/.agents/skills/superdeveloper
    ```
 
-3. Restart Codex.
+3. Restart Codex so skills are rediscovered.
 
-4. **For subagent skills** (optional): Skills like `dispatching-parallel-agents` and `subagent-driven-development` require Codex's multi-agent feature. Add to your Codex config:
-   ```toml
-   [features]
-   multi_agent = true
-   ```
+4. If you want multi-agent workflows, make sure your Codex setup supports subagents.
 
 ### Windows
 
-Use a junction instead of a symlink (works without Developer Mode):
+Use a junction instead of a symlink:
 
 ```powershell
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
-cmd /c mklink /J "$env:USERPROFILE\.agents\skills\superdeveloper" "$env:USERPROFILE\.codex\superdeveloper\skills"
+cmd /c mklink /J "$env:USERPROFILE\.agents\skills\superdeveloper" "$env:USERPROFILE\.codex\superdeveloper\skills\superdeveloper\skills"
 ```
 
-## How It Works
+## What gets installed
 
-Codex has native skill discovery — it scans `~/.agents/skills/` at startup, parses SKILL.md frontmatter, and loads skills on demand. Superdeveloper skills are made visible through a single symlink:
+The package exposes the skill folders under `skills/superdeveloper/skills/`. Once linked, Codex can discover the contained `SKILL.md` entry points on startup.
 
-```
-~/.agents/skills/superdeveloper/ → ~/.codex/superdeveloper/skills/
-```
+## Related docs
 
-The `using-superdeveloper` skill is discovered automatically and enforces skill usage discipline — no additional configuration needed.
-
-## Usage
-
-Skills are discovered automatically. Codex activates them when:
-- You mention a skill by name (e.g., "use brainstorming")
-- The task matches a skill's description
-- The `using-superdeveloper` skill directs Codex to use one
-
-### Personal Skills
-
-Create your own skills in `~/.agents/skills/`:
-
-```bash
-mkdir -p ~/.agents/skills/my-skill
-```
-
-Create `~/.agents/skills/my-skill/SKILL.md`:
-
-```markdown
----
-name: my-skill
-description: Use when [condition] - [what it does]
----
-
-# My Skill
-
-[Your skill content here]
-```
-
-The `description` field is how Codex decides when to activate a skill automatically — write it as a clear trigger condition.
-
-## Updating
-
-```bash
-cd ~/.codex/superdeveloper && git pull
-```
-
-Skills update instantly through the symlink.
-
-## Uninstalling
-
-```bash
-rm ~/.agents/skills/superdeveloper
-```
-
-**Windows (PowerShell):**
-```powershell
-Remove-Item "$env:USERPROFILE\.agents\skills\superdeveloper"
-```
-
-Optionally delete the clone: `rm -rf ~/.codex/superdeveloper` (Windows: `Remove-Item -Recurse -Force "$env:USERPROFILE\.codex\superdeveloper"`).
-
-## Troubleshooting
-
-### Skills not showing up
-
-1. Verify the symlink: `ls -la ~/.agents/skills/superdeveloper`
-2. Check skills exist: `ls ~/.codex/superdeveloper/skills`
-3. Restart Codex — skills are discovered at startup
-
-### Windows junction issues
-
-Junctions normally work without special permissions. If creation fails, try running PowerShell as administrator.
-
-## Getting Help
-
-- Report issues: https://github.com/themanmakerX/Agentic-AI/issues
-- Main documentation: https://github.com/themanmakerX/Agentic-AI
+- Main package overview: `skills/superdeveloper/README.md`
+- OpenCode install guide: `skills/superdeveloper/docs/README.opencode.md`

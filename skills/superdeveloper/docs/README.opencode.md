@@ -1,10 +1,10 @@
 # Superdeveloper for OpenCode
 
-Complete guide for using Superdeveloper with [OpenCode.ai](https://opencode.ai).
+Guide for using the `superdeveloper` bundle with [OpenCode.ai](https://opencode.ai).
 
 ## Installation
 
-Add superdeveloper to the `plugin` array in your `opencode.json` (global or project-level):
+Add the repository plugin reference to your `opencode.json`:
 
 ```json
 {
@@ -12,119 +12,35 @@ Add superdeveloper to the `plugin` array in your `opencode.json` (global or proj
 }
 ```
 
-Restart OpenCode. The plugin auto-installs via Bun and registers all skills automatically.
+Restart OpenCode after updating the config.
 
-Verify by asking: "Tell me about your superdeveloper"
+## What this package provides
 
-### Migrating from the old symlink-based install
+The `superdeveloper` bundle includes:
 
-If you previously installed superdeveloper using `git clone` and symlinks, remove the old setup:
+- a packaged skill set under `skills/superdeveloper/skills/`
+- OpenCode plugin wiring under `skills/superdeveloper/.opencode/`
+- docs, tests, commands, hooks, and supporting assets around those skills
 
-```bash
-# Remove old symlinks
-rm -f ~/.config/opencode/plugins/superdeveloper.js
-rm -rf ~/.config/opencode/skills/superdeveloper
+## Skill discovery
 
-# Optionally remove the cloned repo
-rm -rf ~/.config/opencode/superdeveloper
+Use OpenCode's native skill tooling to inspect and load package skills. A typical path inside this bundle is:
 
-# Remove skills.paths from opencode.json if you added one for superdeveloper
+```text
+superdeveloper/<skill-name>
 ```
 
-Then follow the installation steps above.
+Examples:
 
-## Usage
-
-### Finding Skills
-
-Use OpenCode's native `skill` tool to list all available skills:
-
-```
-use skill tool to list skills
-```
-
-### Loading a Skill
-
-```
-use skill tool to load superdeveloper/brainstorming
-```
-
-### Personal Skills
-
-Create your own skills in `~/.config/opencode/skills/`:
-
-```bash
-mkdir -p ~/.config/opencode/skills/my-skill
-```
-
-Create `~/.config/opencode/skills/my-skill/SKILL.md`:
-
-```markdown
----
-name: my-skill
-description: Use when [condition] - [what it does]
----
-
-# My Skill
-
-[Your skill content here]
-```
-
-### Project Skills
-
-Create project-specific skills in `.opencode/skills/` within your project.
-
-**Skill Priority:** Project skills > Personal skills > Superdeveloper skills
+- `superdeveloper/brainstorming`
+- `superdeveloper/systematic-debugging`
+- `superdeveloper/subagent-driven-development`
 
 ## Updating
 
-Superdeveloper updates automatically when you restart OpenCode. The plugin is re-installed from the git repository on each launch.
+Because the plugin points at the Git repository, restarting OpenCode refreshes the installed bundle from the repo reference you configured.
 
-To pin a specific version, use a branch or tag:
+## Related docs
 
-```json
-{
-  "plugin": ["superdeveloper@git+https://github.com/themanmakerX/Agentic-AI.git#v5.0.3"]
-}
-```
-
-## How It Works
-
-The plugin does two things:
-
-1. **Injects bootstrap context** via the `experimental.chat.system.transform` hook, adding superdeveloper awareness to every conversation.
-2. **Registers the skills directory** via the `config` hook, so OpenCode discovers all superdeveloper skills without symlinks or manual config.
-
-### Tool Mapping
-
-Skills written for Claude Code are automatically adapted for OpenCode:
-
-- `TodoWrite` → `todowrite`
-- `Task` with subagents → OpenCode's `@mention` system
-- `Skill` tool → OpenCode's native `skill` tool
-- File operations → Native OpenCode tools
-
-## Troubleshooting
-
-### Plugin not loading
-
-1. Check OpenCode logs: `opencode run --print-logs "hello" 2>&1 | grep -i superdeveloper`
-2. Verify the plugin line in your `opencode.json` is correct
-3. Make sure you're running a recent version of OpenCode
-
-### Skills not found
-
-1. Use OpenCode's `skill` tool to list available skills
-2. Check that the plugin is loading (see above)
-3. Each skill needs a `SKILL.md` file with valid YAML frontmatter
-
-### Bootstrap not appearing
-
-1. Check OpenCode version supports `experimental.chat.system.transform` hook
-2. Restart OpenCode after config changes
-
-## Getting Help
-
-- Report issues: https://github.com/themanmakerX/Agentic-AI/issues
-- Main documentation: https://github.com/themanmakerX/Agentic-AI
-- OpenCode docs: https://opencode.ai/docs/
+- Main package overview: `skills/superdeveloper/README.md`
+- Codex install guide: `skills/superdeveloper/docs/README.codex.md`

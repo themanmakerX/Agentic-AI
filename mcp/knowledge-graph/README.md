@@ -12,7 +12,7 @@
 - `fastapi`
 - `uvicorn`
 - `mcp`
-- an installed `knowledge-graph` launcher, for example from:
+- an installed `knowledge-graph` launcher, for example:
 
 ```bash
 pip install -e .
@@ -45,20 +45,28 @@ src/knowledge_graph/
 - `python -m knowledge_graph.mcp.server`
 - `knowledge-graph web`
 
+## Core capabilities
+
+- persistent graph builds for a workspace
+- incremental graph refreshes
+- graph neighborhood expansion
+- path discovery and structural tracing
+- impact-radius and review-context generation
+- retrieval-backed graph Q&A
+- workspace auditing and architecture summaries
+- lightweight wiki generation and refactor suggestions
+- a web UI for live graph browsing and build monitoring
+
 ## MCP setup
 
 ### Claude Code
-
-Claude Code uses the `.mcp.json` approach. A minimal configuration looks like this:
 
 ```json
 {
   "mcpServers": {
     "knowledge-graph": {
       "command": "D:/anaconda3/Scripts/knowledge-graph.exe",
-      "args": [
-        "serve"
-      ],
+      "args": ["serve"],
       "env": {
         "PYTHONPATH": "E:/Education/mcp_server/knowledge-graph/src"
       }
@@ -69,8 +77,6 @@ Claude Code uses the `.mcp.json` approach. A minimal configuration looks like th
 
 ### Codex
 
-Codex uses the `~/.codex/config.toml` approach. The current setup for this repository looks like this:
-
 ```toml
 [mcp_servers.knowledge-graph]
 command = "D:/anaconda3/Scripts/knowledge-graph.exe"
@@ -80,9 +86,7 @@ args = ["serve"]
 PYTHONPATH = "E:/Education/mcp_server/knowledge-graph/src"
 ```
 
-This Codex example intentionally omits `cwd`. With the current runtime model, that lets `.graph_db` follow the inherited launch directory of the MCP process instead of forcing a fixed repo path.
-
-If you want per-tool approvals in Codex, extend that block with tool-specific settings in the same file.
+This Codex example intentionally omits `cwd`, so `.graph_db` follows the inherited launch directory of the MCP process.
 
 ## Web app
 
@@ -104,13 +108,11 @@ The app exposes:
 - `POST /api/find_paths`
 - `POST /api/chat`
 
-The browser UI is query-driven. It does not depend on a generated `index.html + graph.json` bundle.
-
-When an MCP `build_or_update_graph` call starts, the web app is also made available in parallel and the response includes `web_url`, `api_url`, and `build_status_url` so the same build can be watched live in the browser.
+When an MCP `build_or_update_graph` call starts, the web app can also be made available in parallel and returns `web_url`, `api_url`, and `build_status_url`.
 
 ## MCP tools
 
-The MCP surface includes:
+The current MCP surface includes:
 
 - `build_or_update_graph`
 - `get_build_status`
@@ -118,14 +120,25 @@ The MCP surface includes:
 - `stop_web_server`
 - `autocomplete_entities`
 - `get_neighbors`
-- `find_paths`
-- `ask_graph`
-- `trace_dataflow`
 - `get_impact_radius`
+- `get_review_context`
+- `query_graph`
+- `semantic_search_nodes`
+- `list_graph_stats`
+- `find_files_by_pattern`
+- `detect_changes`
+- `find_paths`
+- `trace_dataflow`
+- `ask_graph`
+- `audit_workspace`
+- `list_communities`
+- `get_architecture_overview`
+- `refactor_workspace`
+- `generate_wiki`
 
-## Notes
+## Runtime notes
 
-- Runtime outputs are written under `.graph_db/`
-- Workspace databases live under `.graph_db/workspaces/<workspace>/graph.sqlite3`
-- Background build statuses live under `.graph_db/jobs/<job_id>.json`
-- The background web server stays alive until it is stopped explicitly through `stop_web_server` or the hosting MCP process exits
+- runtime outputs are written under `.graph_db/`
+- workspace databases live under `.graph_db/workspaces/<workspace>/graph.sqlite3`
+- background build statuses live under `.graph_db/jobs/<job_id>.json`
+- the background web server stays alive until explicitly stopped or the hosting MCP process exits

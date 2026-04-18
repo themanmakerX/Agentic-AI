@@ -1,28 +1,29 @@
 # Vault
 
-Vault is an MCP plugin for persistent agent memory, vault selection, record storage, facts, links, journals, and checkpoint hooks.
+Vault is an MCP plugin for persistent agent memory, vault selection, records, facts, links, journals, and checkpoint hooks.
 
 ## What it stores
 
-- Records: verbatim notes, decisions, snippets, and context
-- Facts: structured entity relationships with optional validity windows
-- Links: explicit connections between records
-- Journal entries: session checkpoints and handoff notes
+- records for notes, decisions, snippets, and context
+- facts for structured entity relationships
+- links for explicit record-to-record connections
+- journal entries for session checkpoints and handoff notes
 
 ## Core behavior
 
-- Uses one active vault at a time
-- Prompts once when no vault is configured
-- Remembers the chosen vault location
-- Supports multiple vaults and switching between them
-- Offers optional hooks for automatic checkpointing
+- uses one active vault at a time
+- prompts once when no vault is configured
+- remembers the chosen vault location
+- supports multiple vaults and switching between them
+- exposes optional hooks for automatic checkpointing
 
-## Files
+## Package files
 
 - `./.mcp.json` exposes the MCP server
-- `./hooks.json` wires optional Claude Code hooks
-- `./scripts/` contains the Python server and CLI helpers
-- `./skills/vault/SKILL.md` gives the agent the operating rules
+- `./hooks.json` wires optional client hooks
+- `./scripts/` contains the runtime and CLI helpers
+- `./skills/vault/SKILL.md` provides the operating rules for assistants
+- `./.codex-plugin/plugin.json` contains plugin metadata
 
 ## Default storage
 
@@ -30,15 +31,9 @@ Vault data lives under `~/.vault` by default.
 
 Each vault directory gets its own `.vault/` metadata folder.
 
-## Language policy
+## Typical use cases
 
-- Runtime implementation is Python only
-- Stored records, facts, links, journal notes, and tags are sanitized to English ASCII text
-- Non-English script input is rejected when nothing English remains after sanitization
-
-## How the assistant should behave
-
-- If there is no active vault, ask the user for a vault location
-- If the user already has vaults, show the existing options and continue from the selected one
-- Keep writing checkpoints and records over time
-- Use the active vault automatically after it is configured
+- carry context across sessions
+- save explicit decisions and checkpoints
+- store structured facts that can be queried later
+- keep multiple named vaults for different projects or domains

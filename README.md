@@ -1,61 +1,58 @@
 # Agentic-AI
 
-Agentic-AI is a multi-agent ecosystem for coding agents. This repository is split into two main parts:
+Agentic-AI is a repository of reusable assets for coding agents. It combines two complementary layers:
 
-- `skills/` for agent behavior, workflows, and instruction files
-- `mcp/` for the repository's MCP bundles
+- `skills/` for agent behavior, workflows, prompts, and packaged skill bundles
+- `mcp/` for MCP servers and plugins that provide graph analysis, memory, and related tooling
 
-The goal of the repo is to make agent workflows more structured, more reviewable, and easier to use across different client platforms.
+The repository is organized so that instruction-driven workflows and executable tooling can evolve side by side while still being easy to discover.
 
-## What is inside
+## Repository areas
 
 ### Skills
 
-The `skills/` tree contains the agent-facing workflows that get triggered during coding sessions. The current skill index includes:
+The [`skills/`](skills/) directory contains the repository's skill packages:
 
-- `repo-onboarding` - deep repository onboarding, tree analysis, and instruction-tree generation
-- `superdeveloper` - end-to-end development orchestration with platform detection, staged multi-agent teams, review gates, and documentation capture
+- [`repo-onboarding/`](skills/repo-onboarding/) for repository analysis, context building, and onboarding workflows
+- [`superdeveloper/`](skills/superdeveloper/) for a larger multi-agent bundle with platform-specific integrations, commands, tests, docs, hooks, and embedded MCP references
 
-See [`skills/README.md`](skills/README.md) for the skill index.
+See [skills/README.md](E:/Education/Agentic-AI/skills/README.md) for the skills index.
 
-### MCP tooling
+### MCP
 
-The `mcp/` tree contains the repository's MCP-related bundles:
+The [`mcp/`](mcp/) directory contains the repository's MCP packages and plugins:
 
-- [`code-review-graph/`](mcp/code-review-graph/) - a Python MCP package for code review graph analysis, graph queries, workspace audit, and TOML installer support
-- [`vault/`](mcp/vault/) - a JavaScript MCP plugin bundle for persistent agent memory, vault selection, records, facts, links, journals, and checkpoint hooks
+- [`knowledge-graph/`](mcp/knowledge-graph/) for persistent code graph indexing, querying, architecture exploration, and a browser-based graph UI
+- [`vault/`](mcp/vault/) for persistent agent memory, vault selection, records, facts, links, journals, and checkpoint workflows
 
-See [`mcp/README.md`](mcp/README.md) for the MCP index.
+See [mcp/README.md](E:/Education/Agentic-AI/mcp/README.md) for the MCP index.
 
-## Repository layout
+## Layout
 
 ```text
 Agentic-AI/
-├─ mcp/
-│  ├─ code-review-graph/
-│  └─ vault/
-├─ skills/
-└─ README.md
+|- mcp/
+|  |- knowledge-graph/
+|  `- vault/
+|- skills/
+|  |- repo-onboarding/
+|  `- superdeveloper/
+`- README.md
 ```
 
-## How to use this repo
+## How to navigate this repo
 
-- If you want to add or inspect agent workflows, start in `skills/`
-- If you want to run or extend the code review graph service, start in `mcp/code-review-graph/`
-- If you want to use the Vault MCP bundle, start in `mcp/vault/`
-- If you are onboarding to the repository, read `skills/repo-onboarding/SKILL.md`
-- If you want the multi-agent orchestration workflow, read `skills/superdeveloper/SKILL.md`
+- Start in `skills/` if you want reusable agent instructions or workflow guidance.
+- Start in `mcp/` if you want runnable tooling that agents can call through MCP.
+- Open `skills/superdeveloper/` if you want the most complete packaged bundle in the repository.
+- Open `mcp/knowledge-graph/` if you want codebase indexing and graph exploration.
+- Open `mcp/vault/` if you want persistent memory and checkpoint storage.
 
-## Why it is structured this way
+## Documentation expectations
 
-The repository separates agent instructions from service code so each part can evolve independently:
+This repository depends heavily on discoverability. When folders, commands, or capabilities change:
 
-- skills can focus on agent behavior and workflow guidance
-- the MCP bundles can focus on analysis, memory, and review tooling
-- the root README can stay short and point people to the right place quickly
-
-## Contributing
-
-When changing a skill, keep the skill index up to date and make sure the documentation matches the actual folder structure.
-
-When changing an MCP bundle, keep its README and launcher/config files aligned with the code and install flow.
+- update the nearest README first
+- keep parent index READMEs aligned with actual folder names
+- remove stale package names and outdated install paths
+- prefer concise indexes at the top level and deeper operational detail near the implementation
