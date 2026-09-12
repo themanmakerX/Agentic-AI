@@ -13,10 +13,12 @@ The repository is organized so that instruction-driven workflows and executable 
 
 The [`skills/`](skills/) directory contains the repository's skill packages:
 
+- [`debug-journal/`](skills/debug-journal/) for structured, integrity-checked DV debug journals, similarity search, and bug-history tracking
+- [`ledger/`](skills/ledger/) for local-first, append-only developer session ledgers, audit trails, checkpoints, replay, and dashboard views
 - [`repo-onboarding/`](skills/repo-onboarding/) for repository analysis, context building, and onboarding workflows
 - [`superdeveloper/`](skills/superdeveloper/) for a larger multi-agent bundle with platform-specific integrations, commands, tests, docs, hooks, and embedded MCP references
 
-See [skills/README.md](E:/Education/Agentic-AI/skills/README.md) for the skills index.
+See [skills/README.md](skills/README.md) for the skills index.
 
 ### MCP
 
@@ -25,7 +27,7 @@ The [`mcp/`](mcp/) directory contains the repository's MCP packages and plugins:
 - [`knowledge-graph/`](mcp/knowledge-graph/) for persistent code graph indexing, querying, architecture exploration, and a browser-based graph UI
 - [`vault/`](mcp/vault/) for persistent agent memory, vault selection, records, facts, links, journals, and checkpoint workflows
 
-See [mcp/README.md](E:/Education/Agentic-AI/mcp/README.md) for the MCP index.
+See [mcp/README.md](mcp/README.md) for the MCP index.
 
 ## Layout
 
@@ -35,6 +37,8 @@ Agentic-AI/
 |  |- knowledge-graph/
 |  `- vault/
 |- skills/
+|  |- debug-journal/
+|  |- ledger/
 |  |- repo-onboarding/
 |  `- superdeveloper/
 `- README.md
@@ -43,6 +47,8 @@ Agentic-AI/
 ## How to navigate this repo
 
 - Start in `skills/` if you want reusable agent instructions or workflow guidance.
+- Open `skills/debug-journal/` if you want DV bug-hunt journals, regression tracking, and past-bug similarity search.
+- Open `skills/ledger/` if you want local session activity logging, checkpoints, replay, and audit summaries.
 - Start in `mcp/` if you want runnable tooling that agents can call through MCP.
 - Open `skills/superdeveloper/` if you want the most complete packaged bundle in the repository.
 - Open `mcp/knowledge-graph/` if you want codebase indexing and graph exploration.

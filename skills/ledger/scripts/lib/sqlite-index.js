@@ -1,0 +1,16 @@
+'use strict';
+const path=require('path'); const fs=require('fs');
+let DatabaseSync=null; try{({DatabaseSync}=require('node:sqlite'));}catch(_){ }
+function available(){return !!DatabaseSync;}
+function dbPath(home){return path.join(home,'ledger-index.sqlite');}
+function open(home){ if(!DatabaseSync) return null; fs.mkdirSync(home,{recursive:true}); const db=new DatabaseSync(dbPath(home)); db.exec(`PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL;
+CREATE TABLE IF NOT EXISTS events(session_id TEXT, seq INTEGER, ts TEXT, op TEXT, tool TEXT, path TEXT, summary TEXT, detail TEXT, language TEXT, change_type TEXT, risk INTEGER, test_kind TEXT, symbols TEXT, dependencies TEXT, hash TEXT, PRIMARY KEY(session_id,seq));
+CREATE INDEX IF NOT EXISTS idx_events_path ON events(path); CREATE INDEX IF NOT EXISTS idx_events_op ON events(op); CREATE INDEX IF NOT EXISTS idx_events_ts ON events(ts);
+CREATE VIRTUAL TABLE IF NOT EXISTS events_fts USING fts5(session_id UNINDEXED, seq UNINDEXED, path, summary, detail, symbols, dependencies, tokenize='porter unicode61');
+CREATE TABLE IF NOT EXISTS relations(session_id TEXT, from_seq INTEGER, to_seq INTEGER, type TEXT, detail TEXT, PRIMARY KEY(session_id,from_seq,to_seq,type));`); return db; }
+function indexEvent(home,sessionId,e){ const db=open(home); if(!db) return false; try{ const row=[sessionId,e.seq,e.ts,e.op,e.tool,e.path||'',e.summary||'',e.detail||'',e.language||'',e.changeType||'',e.risk?.score||0,e.testKind||'',JSON.stringify(e.symbols||[]),JSON.stringify(e.dependencies||[]),e.hash||'']; db.prepare(`INSERT OR REPLACE INTO events VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).run(...row); db.prepare('DELETE FROM events_fts WHERE session_id=? AND seq=?').run(sessionId,e.seq); db.prepare('INSERT INTO events_fts(session_id,seq,path,summary,detail,symbols,dependencies) VALUES(?,?,?,?,?,?,?)').run(sessionId,e.seq,e.path||'',e.summary||'',e.detail||'',JSON.stringify(e.symbols||[]),JSON.stringify(e.dependencies||[])); return true;} finally{db.close();}}
+function rebuild(home,sessions,loadEvents){ const p=dbPath(home); try{fs.unlinkSync(p);}catch(_){}; const db=open(home); if(!db) return false; db.close(); for(const sid of Object.keys(sessions)) for(const e of loadEvents(sid)) indexEvent(home,sid,e); return true; }
+function search(home,q,{session,limit=50}={}){ const db=open(home); if(!db) return []; try{ let sql=`SELECT e.*, bm25(events_fts) rank FROM events_fts JOIN events e ON e.session_id=events_fts.session_id AND e.seq=events_fts.seq WHERE events_fts MATCH ?`; const args=[q]; if(session){sql+=' AND e.session_id=?';args.push(session);} sql+=' ORDER BY rank LIMIT ?';args.push(Number(limit)||50); return db.prepare(sql).all(...args);} finally{db.close();}}
+function addRelation(home,r){const db=open(home);if(!db)return;try{db.prepare('INSERT OR REPLACE INTO relations(session_id,from_seq,to_seq,type,detail) VALUES(?,?,?,?,?)').run(r.sessionId,r.fromSeq,r.toSeq,r.type,r.detail||'');}finally{db.close();}}
+function relations(home,sessionId){const db=open(home);if(!db)return[];try{return db.prepare('SELECT session_id,from_seq,to_seq,type,detail FROM relations WHERE session_id=? ORDER BY from_seq,to_seq').all(sessionId);}finally{db.close();}}
+module.exports={available,dbPath,indexEvent,rebuild,search,addRelation,relations};
